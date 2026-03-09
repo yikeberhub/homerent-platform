@@ -14,12 +14,12 @@ class UserAdmin(admin.ModelAdmin):
         'created_at'
     )
     
-
 # @admin.register(Credit)
 # class CreditAdmin(admin.ModelAdmin):
     
 #     list_display = (
+#         'id',
 #         'user',
-#         'total_credits',
-#         'used_credits'
+#         'amount',
+#         'created_at'
 #     )

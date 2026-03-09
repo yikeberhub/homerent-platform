@@ -14,7 +14,7 @@ SECRET_KEY= os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -62,12 +62,6 @@ MIDDLEWARE = [
 ]
 
 
-SPECTACULAR_SETTINGS = {
-    'TITLE':'HomeRent API',
-    'DESCRIPTION':'Rental Marketplace backend API',
-    'VERSION':'1.0.0',
-}
-
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -81,7 +75,13 @@ REST_FRAMEWORK ={
     'DEFAULT_FILTER_BACKENDS':[
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
-    'DEFAULT_SCHEMA_CLASSE':'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "HomeRent API",
+    "DESCRIPTION": "API documentation for the HomeRent rental platform",
+    "VERSION": "1.0.0",
 }
 
 SIMPLE_JWT ={
