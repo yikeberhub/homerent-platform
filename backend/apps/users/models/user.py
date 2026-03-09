@@ -6,11 +6,12 @@ from apps.users.managers import UserManager
 
 class User(AbstractBaseUser,PermissionsMixin):
     
-    class Role(models.TextChoices):
-        RENTER = 'RENTER','Renter'
-        LANDLORD = 'LANDLORD','Landlord'
-        ADMIN = 'ADMIN', 'Admin'
-        
+    ROLE_CHOICES = (
+        ("RENTER", "Renter"),
+        ("OWNER", "Owner"),
+        ("ADMIN", "Admin"),
+    )
+
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
@@ -18,8 +19,8 @@ class User(AbstractBaseUser,PermissionsMixin):
     
     role = models.CharField(
         max_length=20,
-        choices=Role.Choices,
-        default=Role.RENTER
+        choices=ROLE_CHOICES,
+        default='RENTER'
     )
     
     is_verified = models.BooleanField(default=False)
