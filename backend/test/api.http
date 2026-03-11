@@ -1,9 +1,48 @@
 
 
-POST http://localhost:8000/api/v1/users/login/ 
+POST http://localhost:8000/api/v1/users/forgot-password/
+
 Content-Type:application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczMjM0MTEyLCJpYXQiOjE3NzMyMzA1MTIsImp0aSI6Ijk0ZDViNzM1NTU2ZDRiMmNiMjJlODVhN2VmZWNiNjA2IiwidXNlcl9pZCI6IjMifQ.erqBPdrp6-ODvXyoqD16v5OOnSiVKUzXqpgjGo7gYik
 
 {
-"email":"yike@gmail.com",
-"password":"yike1234"
+"email":"yikeber50@gmail.com"
 }
+
+
+
+
+# {
+# "email":"yikeber50@gmail.com",
+# "password":"yike1234",
+# "phone":"0947488444",
+# "role":"RENTER",
+# "name":"yikeber"
+# }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response 
+from rest_framework.exceptions import ValidationError
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status 
 from apps.users.serializers.register_serializer import RegisterSerializer 
 from apps.users.serializers.login_serializer import LoginSerializer 
@@ -57,3 +59,47 @@ class ProfileView(APIView):
             },
             message = 'User profile fetched successfully'
         )
+        
+        
+class RefreshTokenView(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = []
+    
+    def post(self,request):
+        
+        refresh_token = request.data.get('refresh')
+        
+        if not refresh_token:
+            raise ValidationError('Refresh token required')
+        
+        try:
+            token = RefreshToken(refresh_token)
+            return success_response(
+                data = {
+                    'access_token':str(token.access_token)
+                },
+                message='Token refreshed'
+            )
+        except:
+            raise ValidationError('Invalid refresh token')
+    
+    
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self,request):
+        
+        refresh_token = request.data.get('refresh')
+        
+        if not refresh_token:
+            raise ValidationError('Refresh token required')
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return success_response(
+                message='Logged out successfully'
+            )
+        except:
+            raise ValidationError('Invalid refresh token')
+        
+        

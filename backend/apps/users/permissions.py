@@ -1,10 +1,10 @@
 
 from rest_framework.permissions import BasePermission
 
-class IsLandLord(BasePermission):
+class IsOwner(BasePermission):
     
     def has_permission(self,request,view):
-        return request.user.role == 'LANDLORD'
+        return request.user.role == 'OWNER'
     
     
 
