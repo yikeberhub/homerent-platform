@@ -11,6 +11,7 @@ class ChangePasswordView(APIView):
     def post(self,request):
         
         serializer = ChangePasswordSerializer(data=request.data)
+        print('serializers data',serializer.initial_data)
         serializer.is_valid(raise_exception=True)
         
         PasswordService.change_password(
@@ -24,12 +25,13 @@ class ChangePasswordView(APIView):
         
 class ForgotPassword(APIView):
     permission_classes=[AllowAny]
-    authentication_classes=[]
+    authentication_classes = []
     
     def post(self,request):
+        print('i am called')
         serializer = ForgotPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        PasswordService.send_reset_email(serializer.validated_data['email',request])
+        PasswordService.send_reset_email(serializer.validated_data['email'],request)
         
         return success_response(
             message='If an account exists with this email, a reset link has been sent.'

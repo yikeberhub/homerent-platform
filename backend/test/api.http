@@ -1,13 +1,18 @@
 
 
 POST http://localhost:8000/api/v1/users/forgot-password/
-
 Content-Type:application/json
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczMjM0MTEyLCJpYXQiOjE3NzMyMzA1MTIsImp0aSI6Ijk0ZDViNzM1NTU2ZDRiMmNiMjJlODVhN2VmZWNiNjA2IiwidXNlcl9pZCI6IjMifQ.erqBPdrp6-ODvXyoqD16v5OOnSiVKUzXqpgjGo7gYik
 
-{
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczMjQxNjEzLCJpYXQiOjE3NzMyMzgwMTMsImp0aSI6IjgxYjc1Njg2MDk4NDQ0OTM5ZGMyYTc3NDI2ZmVhN2QyIiwidXNlcl9pZCI6IjMifQ._CKr6LjCqgbL4RAEhDlRvbVl6Lw2Rdr5_qTPIdINsKo
+ {
 "email":"yikeber50@gmail.com"
 }
+
+
+# {
+# "old_password":"yike1234",
+# "new_password":"yike5678"
+# }
 
 
 
