@@ -5,8 +5,9 @@ from apps.users.serializers.register_serializer import RegisterSerializer
 from apps.users.serializers.login_serializer import LoginSerializer 
 from apps.users.serializers.user_serializer import UserSerializer
 from apps.users.services.auth_service import AuthService 
-from rest_framework.permissions import IsAuthenticated 
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated ,AllowAny
+
+from  core.responses import success_response,error_response
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
@@ -17,12 +18,11 @@ class RegisterView(APIView):
         serializer.is_valid(raise_exception=True)
         user = AuthService.register_user(serializer.validated_data)
         
-        return Response({
-            'message':'user registered successfully',
-            'user':UserSerializer(user).data
-        
-        },status=status.HTTP_201_CREATED)
-        
+        return success_response(
+            data={'user':UserSerializer(user).data},
+            message='User registered successfully',
+            status_code=201
+        )
   
 class LoginView(APIView):
     permission_classes = [AllowAny]
@@ -32,23 +32,28 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception = True)
         
-        email = serializer.validated_data.get('email')
-        password = serializer.validated_data.get('password')
-        user = AuthService.login_user(email,password)
+        result = AuthService.login_user(**serializer.validated_data)
+        user = UserSerializer(result['user']).data 
+        access = result['access']
+        refresh = result['refresh']
         
-        token = 'This is token...'
-        return Response({
-            'message':'Login successful',
-            'user':UserSerializer(user).data,
-            'token':token
-        },status = status.HTTP_200_OK)
-    
+        return success_response(
+            data={
+                'user':user,
+                'access_token':access,
+                'refresh_token':refresh
+            },
+            message='Login successfull',
+        )
     
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self,request):
         user = AuthService.get_profile(request.user)
-        return Response({
-            'user':UserSerializer(user).data
-        },status=status.HTTP_200_OK)
+        return success_response(
+            data={
+                'user':user.data
+            },
+            message = 'User profile fetched successfully'
+        )
