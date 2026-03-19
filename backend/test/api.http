@@ -1,31 +1,31 @@
 
-post http://localhost:8000/api/v1/properties/add/
+post http://localhost:8000/api/v1/properties/1/deactivate/
 Content-Type:application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MTE3NTU2LCJpYXQiOjE3NzM5NDExNTYsImp0aSI6IjcxOWY5OGYxMGIzYTRjMzQ4NGQyMGU2ZjNlOGEyYjMxIiwidXNlcl9pZCI6IjMifQ.jpRpk8oTBWY6qhE8TbMHrdoy5IDPJeVUhhOhsSFKhgg
 
- {
-          "location": {
-            "city": "Bahirdar",
-            "village": "Atse Tewodros",
-            "region": "amhara",
-            "latitude": "11.564600",
-            "longitude": "28.545000"
-          },
+#  {
+#           "location": {
+#             "city": "Bahirdar",
+#             "village": "Atse Tewodros",
+#             "region": "amhara",
+#             "latitude": "11.564600",
+#             "longitude": "28.545000"
+#           },
          
-          "title": "House for selling",
-          "description": "500 sqm house located in amhara region bahirdar city",
-          "area_sqm": 350,
-          "year_built": 2000,
-          "price": "3000.00",
-          "maintenance_fee": null,
-          "listing_type": "rent",
-          "is_active": true,
-          "is_available": false,
-          "is_featured": false,
-          "phone_contact": "0946472687",
-          "category": 1,
-          "owner": 2
-        }
+#           "title": "House for selling",
+#           "description": "500 sqm house located in amhara region bahirdar city",
+#           "area_sqm": 350,
+#           "year_built": 2000,
+#           "price": "3000.00",
+#           "maintenance_fee": null,
+#           "listing_type": "rent",
+#           "is_active": true,
+#           "is_available": false,
+#           "is_featured": false,
+#           "phone_contact": "0946472687",
+#           "category": 1,
+#           "owner": 2
+#         }
 
 
 #  {

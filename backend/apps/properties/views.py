@@ -175,33 +175,87 @@ class DeactivateProperty(APIView):
             )
 
 
-class FavoriteProperty(APIView):
+class AddToFavoriteView(APIView):
     permission_classes = [IsAuthenticated, IsRenter]
+
+    def post(self, request, pk):
+        try:
+            property_obj = Property.objects.get(pk=pk, status="ACTIVE")
+
+            favorite, created = Favorite.objects.get_or_create(
+                user=request.user,
+                property=property_obj
+            )
+
+            if not created:
+                return success_response(message="Already in favorites")
+
+            return success_response(message="Added to favorites")
+
+        except Property.DoesNotExist:
+            return error_response(
+                message="Property not found",
+                status_code=404
+            )
+
+class RemoveFromFavoriteView(APIView):
+    permission_classes = [IsAuthenticated, IsRenter]
+
+    def post(self, request, pk):
+        try:
+            property_obj = Property.objects.get(pk=pk)
+
+            favorite = Favorite.objects.filter(
+                user=request.user,
+                property=property_obj
+            ).first()
+
+            if not favorite:
+                return error_response(
+                    message="Not in favorites",
+                    status_code=404
+                )
+
+            favorite.delete()
+            return success_response(message="Removed from favorites")
+
+        except Property.DoesNotExist:
+            return error_response(
+                message="Property not found",
+                status_code=404
+            )
+            
+            
+class ActivatePropertyView(APIView):
+    permission_classes = [IsAuthenticated, IsPropertyOwnerOrAdmin]
     
     def post(self, request, pk):
         try:
             property_obj = Property.objects.get(pk=pk)
-            # Add to user's favorites
-            request.user.favorite_properties.add(property_obj)
+            self.check_object_permissions(request, property_obj)
+            property_obj.is_active = True
+            property_obj.save()
             return success_response(
-                message='Property added to favorites'
+                message='Property activated successfully'
             )
         except Property.DoesNotExist:
             return error_response(
                 message='Property not found',
                 status_code=404
             )
-
-
-class UnfavoriteProperty(APIView):
-    permission_classes = [IsAuthenticated, IsRenter]
+            
+            
+class DeactivatePropertyView(APIView):
+    permission_classes = [IsAuthenticated, IsPropertyOwnerOrAdmin]
     
     def post(self, request, pk):
         try:
             property_obj = Property.objects.get(pk=pk)
-            request.user.favorite_properties.remove(property_obj)
+            self.check_object_permissions(request, property_obj)
+            property_obj.is_active = False
+            property_obj.save()
             return success_response(
-                message='Property removed from favorites'
+                message='Property deactivated successfully'
             )
         except Property.DoesNotExist:
             return error_response(

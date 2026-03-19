@@ -1,6 +1,14 @@
 from django.urls import path 
 
-from apps.properties.views import GetProperties,AddProperty,PropertyDetail,UpdateProperty,DeleteProperty
+from apps.properties.views import (GetProperties,
+                                   AddProperty,
+                                   PropertyDetail,
+                                   UpdateProperty,
+                                   DeleteProperty,AddToFavoriteView,
+                                   RemoveFromFavoriteView,
+                                   ActivatePropertyView,
+                                   DeactivatePropertyView
+                                   )
 
 urlpatterns = [
     path('',GetProperties.as_view(),name='get-properties'),
@@ -17,10 +25,10 @@ urlpatterns = [
     # path('category/<int:category_id>/', PropertiesByCategoryView.as_view(), name='properties-by-category'),
     
     # # Action endpoints
-    # path('<int:pk>/activate/', PropertyActivateView.as_view(), name='property-activate'),
-    # path('<int:pk>/deactivate/', PropertyDeactivateView.as_view(), name='property-deactivate'),
-    # path('<int:pk>/favorite/', PropertyFavoriteView.as_view(), name='property-favorite'),
-    # path('<int:pk>/unfavorite/', PropertyUnfavoriteView.as_view(), name='property-unfavorite'),
+    path('<int:pk>/activate/', ActivatePropertyView.as_view(), name='property-activate'),
+    path('<int:pk>/deactivate/', DeactivatePropertyView.as_view(), name='property-deactivate'),
+    path('<int:pk>/favorite/', AddToFavoriteView.as_view(), name='property-favorite'),
+    path('<int:pk>/unfavorite/', RemoveFromFavoriteView.as_view(), name='property-unfavorite'),
     # path('<int:pk>/bookmark/', PropertyBookmarkView.as_view(), name='property-bookmark'),
     
 ]
