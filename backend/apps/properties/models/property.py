@@ -36,10 +36,11 @@ class Property(models.Model):
         return f"{self.title} - {self.location.full_address}"
     
     class Meta:
-        ordering = ['-created_at']
-        verbose_name_plural = "Properties"
+        ordering = ["created_at"]
+        verbose_name_plural = ['Properties']
 
 class PropertyImage(models.Model):
+    
     property = models.ForeignKey(Property, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='property_images/')
     is_primary = models.BooleanField(default=False)

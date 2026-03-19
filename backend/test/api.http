@@ -1,8 +1,8 @@
 
-delete http://localhost:8000/api/v1/properties/4/delete/
+post http://localhost:8000/api/v1/properties/add/
 Content-Type:application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MDgzNzY4LCJpYXQiOjE3NzM5MDczNjgsImp0aSI6IjA1ODRhODMwZjJiNTQ3ZTdhY2YzMDIzNTU0NjU3ODFkIiwidXNlcl9pZCI6IjIifQ.D-919RS3D5oESMvowRrPs7ilifWHfiEeK5zM21yON5Q 
- 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MTE3NTU2LCJpYXQiOjE3NzM5NDExNTYsImp0aSI6IjcxOWY5OGYxMGIzYTRjMzQ4NGQyMGU2ZjNlOGEyYjMxIiwidXNlcl9pZCI6IjMifQ.jpRpk8oTBWY6qhE8TbMHrdoy5IDPJeVUhhOhsSFKhgg
+
  {
           "location": {
             "city": "Bahirdar",
@@ -23,9 +23,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
           "is_available": false,
           "is_featured": false,
           "phone_contact": "0946472687",
-          "category": 3,
-          "owner": 3
+          "category": 1,
+          "owner": 2
         }
+
+
+#  {
+# "name":"room",
+# "description":"Room category description"
+# }
+
+
+
 
 #  {
 # "name":"room",
@@ -37,11 +46,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 # POST http://localhost:8000/api/v1/users/login/
 # Content-Type:application/json
-# # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczODM4OTkzLCJpYXQiOjE3NzM4MzUzOTMsImp0aSI6IjQ0ZTYyZDVkZjgxZDQ2NmZiNWY2OGE2YWIwMDUzNmZmIiwidXNlcl9pZCI6IjIifQ.vToQbi6WdN0Irky8AuUFml9owuwWOE1uhJcL_nMAxeQ
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MTE3MTk4LCJpYXQiOjE3NzM5NDA3OTgsImp0aSI6IjUyNTliNjYyNGY3NTRiOGM5YTkwNzQ3NjIwMDU1OGI1IiwidXNlcl9pZCI6IjEifQ.w0ZQU4BShHZOMShc9M5lD4ffaXpp8BaIDlTk68WdJyQ
 
 
 # {
-#     "email":"yike@gmail.com",
+# "email":"yikeber@gmail.com",
+# "password":"yike1234",
+# "phone":"0947482444",
+# "role":"OWNER",
+# "name":"yikeber"
+# }
+
+# {
+#     "email":"yikeber@gmail.com",
 #     "password":"yike1234"
 # }
 

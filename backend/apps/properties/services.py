@@ -14,11 +14,13 @@ class PropertyService:
                 location = Location.objects.get(
                     city=location_data.get('city'),
                     village=location_data.get('village'),
-                    region=location_data.get('region')
+                    region=location_data.get('region'),
+                    latitude=location_data.get('latitude'),
+                    longitude=location_data.get('longitude')
                     
                 )
                 return location 
-            except Location.DeesNotExist:
+            except Location.DoesNotExist:
                 location_serializer = LocationCreateUpdateSerializer(data=location_data)
                 if location_serializer.is_valid():
                     return location_serializer.save()
@@ -46,7 +48,7 @@ class PropertyService:
         location = PropertyService.handle_location_data(location_data)
         validated_data['location'] = location
         property_instance = Property.objects.create(**validated_data)
-        if image_data:
+        if images_data:
             PropertyService._hanle_property_images(property_instance,images_data)
             
         return property_instance

@@ -17,7 +17,7 @@ class Location(models.Model):
     ]
     
     city = models.CharField(max_length=100, help_text="City or Town name")
-    village = models.CharField(max_length=100, blank=True, help_text="Village or neighborhood name within city (optional)")
+    village = models.CharField(max_length=100, blank=True, help_text="Village or neighborhood name within")
     region = models.CharField(max_length=50, choices=REGIONS)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)

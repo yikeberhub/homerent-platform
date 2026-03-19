@@ -36,3 +36,14 @@ class User(AbstractBaseUser,PermissionsMixin):
     
     def __str__(self):
         return self.email
+    
+    def is_admin(self):
+        return self.role=='ADMIN'
+    
+    def is_owner(self):
+        return self.role =='OWNER'
+    
+    def is_retner(self):
+        return self.role =='RENTER'
+    
+    

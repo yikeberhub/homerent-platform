@@ -9,4 +9,18 @@ urlpatterns = [
     path('<int:pk>/update/',UpdateProperty.as_view(),name='update-property'),
     path('<int:pk>/delete/',DeleteProperty.as_view(),name='delete-property'),
     
+    # path('search/', PropertySearchView.as_view(), name='property-search'),
+    # path('filter/', PropertyFilterView.as_view(), name='property-filter'),
+    # path('featured/', FeaturedPropertiesView.as_view(), name='featured-properties'),
+    # path('nearby/', NearbyPropertiesView.as_view(), name='nearby-properties'),
+    # path('user/<int:user_id>/', UserPropertiesView.as_view(), name='user-properties'),
+    # path('category/<int:category_id>/', PropertiesByCategoryView.as_view(), name='properties-by-category'),
+    
+    # # Action endpoints
+    # path('<int:pk>/activate/', PropertyActivateView.as_view(), name='property-activate'),
+    # path('<int:pk>/deactivate/', PropertyDeactivateView.as_view(), name='property-deactivate'),
+    # path('<int:pk>/favorite/', PropertyFavoriteView.as_view(), name='property-favorite'),
+    # path('<int:pk>/unfavorite/', PropertyUnfavoriteView.as_view(), name='property-unfavorite'),
+    # path('<int:pk>/bookmark/', PropertyBookmarkView.as_view(), name='property-bookmark'),
+    
 ]
