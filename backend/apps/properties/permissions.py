@@ -5,7 +5,7 @@ from rest_framework.exceptions import PermissionDenied
 class IsPropertyOwnerOrAdmin(permissions.BasePermission):
     
     def has_object_permission(self, request, view, obj):
-        if request.user.is_staff or (hasattr(request.user, 'role') and request.user.role == 'admin'):
+        if request.user.is_staff or (hasattr(request.user, 'role') and request.user.role == 'ADMIN'):
             return True
             
         if hasattr(obj, 'owner'):
@@ -23,19 +23,19 @@ class PropertyAccessPermission(permissions.BasePermission):
         if not request.user.is_authenticated:
             return False
             
-        if hasattr(request.user, 'role') and request.user.role == 'admin':
+        if hasattr(request.user, 'role') and request.user.role == 'ADMIN':
             return True
             
         if isinstance(view, AddProperty):
-            return hasattr(request.user, 'role') and request.user.role == 'owner'
+            return hasattr(request.user, 'role') and request.user.role == 'OWNER'
             
         if isinstance(view, (UpdateProperty, DeleteProperty)):
-            return hasattr(request.user, 'role') and request.user.role in ['owner', 'admin']
+            return hasattr(request.user, 'role') and request.user.role in ['OWNER', 'ADMIN']
             
         return False
     
     def has_object_permission(self, request, view, obj):
-        if hasattr(request.user, 'role') and request.user.role == 'admin':
+        if hasattr(request.user, 'role') and request.user.role == 'ADIN':
             return True
             
         if isinstance(view, (UpdateProperty, DeleteProperty)):
@@ -57,7 +57,7 @@ class IsAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
         return (request.user.is_authenticated and 
                 hasattr(request.user, 'role') and 
-                request.user.role == 'admin')
+                request.user.role == 'ADMIN')
 
 
 class IsRenter(permissions.BasePermission):
@@ -65,4 +65,4 @@ class IsRenter(permissions.BasePermission):
     def has_permission(self, request, view):
         return (request.user.is_authenticated and 
                 hasattr(request.user, 'role') and 
-                request.user.role == 'renter')
+                request.user.role == 'RENTER')
