@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from apps.users.models.user import User 
 from apps.categories.models import Category
 from .location import Location
 
