@@ -167,6 +167,65 @@ class SearchPropertiesView(APIView):
                 message='Properties retrieved successfully'
             ).data
         )
+        
+class FeaturedPropertiesView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request):
+        queryset = PropertyService.get_featured_properties()
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
+        
+class NearbyPropertiesView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request):
+        queryset = PropertyService.get_nearby_properties(request.query_params)
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
+        
+class UserPropertiesView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request,user_id):
+        queryset = Property.objects.filter(owner__id=user_id)
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
+        
+class PropertiesByCategoryView(APIView):
+    
+    def get(self,request,category_id):
+        queryset = Property.objects.filter(category__id=category_id)
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
     
 class ActivateProperty(APIView):
     permission_classes = [IsAuthenticated, IsPropertyOwnerOrAdmin]

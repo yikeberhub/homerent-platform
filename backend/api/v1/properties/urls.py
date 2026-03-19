@@ -9,7 +9,12 @@ from apps.properties.views import (GetProperties,
                                    ActivatePropertyView,
                                    DeactivatePropertyView,
                                    SearchPropertiesView,
-                                   FilterPropertiesView
+                                   FilterPropertiesView,
+                                   FeaturedPropertiesView,
+                                   NearbyPropertiesView,
+                                   UserPropertiesView,
+                                   PropertiesByCategoryView
+                                   
                                    )
 
 urlpatterns = [
@@ -21,17 +26,15 @@ urlpatterns = [
     
     path('search/', SearchPropertiesView.as_view(), name='property-search'),
     path('filter/', FilterPropertiesView.as_view(), name='property-filter'),
-    # path('filter/', PropertyFilterView.as_view(), name='property-filter'),
-    # path('featured/', FeaturedPropertiesView.as_view(), name='featured-properties'),
-    # path('nearby/', NearbyPropertiesView.as_view(), name='nearby-properties'),
-    # path('user/<int:user_id>/', UserPropertiesView.as_view(), name='user-properties'),
-    # path('category/<int:category_id>/', PropertiesByCategoryView.as_view(), name='properties-by-category'),
+    path('featured/', FeaturedPropertiesView.as_view(), name='featured-properties'),
+    path('nearby/', NearbyPropertiesView.as_view(), name='nearby-properties'),
+    path('user/<int:user_id>/', UserPropertiesView.as_view(), name='user-properties'),
+    path('category/<int:category_id>/', PropertiesByCategoryView.as_view(), name='properties-by-category'),
     
     # # Action endpoints
     path('<int:pk>/activate/', ActivatePropertyView.as_view(), name='property-activate'),
     path('<int:pk>/deactivate/', DeactivatePropertyView.as_view(), name='property-deactivate'),
     path('<int:pk>/favorite/', AddToFavoriteView.as_view(), name='property-favorite'),
     path('<int:pk>/unfavorite/', RemoveFromFavoriteView.as_view(), name='property-unfavorite'),
-    # path('<int:pk>/bookmark/', PropertyBookmarkView.as_view(), name='property-bookmark'),
     
 ]

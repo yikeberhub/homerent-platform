@@ -95,7 +95,25 @@ class PropertyService:
             
         )
         return queryset
+    
+    @staticmethod
+    def get_featured_properties(limit=3):
+        return Property.objects.filter(
+            is_active=True,
+            is_available=True,
+            is_featured=True
+        ).order_by('-created_at')[:limit]
             
+            
+    @staticmethod 
+    def get_nearby_properties(location_data,limit=3):
+        queryset = PropertyService.get_base_queryset()
+        queryset = PropertyService.apply_geo_filter(queryset, {
+            'lat': location_data.get('latitude'),
+            'lng': location_data.get('longitude'),
+            'radius': 10
+        })
+        return queryset[:limit]
         
     @staticmethod
     def handle_location_data(location_data):
