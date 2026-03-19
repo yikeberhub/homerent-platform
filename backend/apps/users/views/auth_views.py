@@ -52,6 +52,8 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self,request):
+        
+        print('request user',request.user)
         user = AuthService.get_profile(request.user)
         return success_response(
             data={

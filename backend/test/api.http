@@ -1,12 +1,26 @@
 
-
-POST http://localhost:8000/api/v1/users/forgot-password/
+PATCH    http://localhost:8000/api/v1/categories/2/update/
 Content-Type:application/json
-
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczMjQxNjEzLCJpYXQiOjE3NzMyMzgwMTMsImp0aSI6IjgxYjc1Njg2MDk4NDQ0OTM5ZGMyYTc3NDI2ZmVhN2QyIiwidXNlcl9pZCI6IjMifQ._CKr6LjCqgbL4RAEhDlRvbVl6Lw2Rdr5_qTPIdINsKo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczODk5NDM4LCJpYXQiOjE3NzM4OTU4MzgsImp0aSI6ImM2ZTZiMTc3NmIxZjQ5NzFiODdkZjQxNWFmMDhlMGFhIiwidXNlcl9pZCI6IjIifQ.kz7IbylHRc-9Gy9qwzVZcNxVSvFTAyrytqQQIJN8gu4
+ 
  {
-"email":"yikeber50@gmail.com"
+"name":"room",
+"description":"Room category description"
 }
+
+
+
+
+# POST http://localhost:8000/api/v1/users/login/
+# Content-Type:application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzczODM4OTkzLCJpYXQiOjE3NzM4MzUzOTMsImp0aSI6IjQ0ZTYyZDVkZjgxZDQ2NmZiNWY2OGE2YWIwMDUzNmZmIiwidXNlcl9pZCI6IjIifQ.vToQbi6WdN0Irky8AuUFml9owuwWOE1uhJcL_nMAxeQ
+
+
+# {
+#     "email":"yike@gmail.com",
+#     "password":"yike1234"
+# }
+
 
 
 

@@ -4,6 +4,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from apps.users.models.user import User 
+from apps.users.serializers.user_serializer import UserSerializer
 
 class AuthService:
     
@@ -31,4 +32,5 @@ class AuthService:
     
     @staticmethod
     def get_profile(user):
+        user = UserSerializer(user)
         return user
