@@ -4,6 +4,7 @@ from .models.property import Property
 from .models.location import Location
 from .serializers.property_serializers import PropertySerializer, PropertyCreateUpdateSerializer
 from .permissions import PropertyAccessPermission, IsPropertyOwnerOrAdmin, IsOwner,IsRenter
+from .services.property_service import PropertyService
 from core.responses import success_response, error_response
 from core.pagination import CustomResultPagination
 
@@ -136,7 +137,96 @@ class DeleteProperty(APIView):
                 status_code=500
             )
             
+            
+class FilterPropertiesView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def get(self,request):
+        queryset = PropertyService.filter_properties(request.query_params)
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
+
+class SearchPropertiesView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request):
+        queryset = PropertyService.search_properties(request.query_params.get('q'))
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
+        
+class FeaturedPropertiesView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request):
+        queryset = PropertyService.get_featured_properties()
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
+        
+class NearbyPropertiesView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request):
+        queryset = PropertyService.get_nearby_properties(request.query_params)
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
+        
+class UserPropertiesView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request,user_id):
+        queryset = Property.objects.filter(owner__id=user_id)
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
+        
+class PropertiesByCategoryView(APIView):
+    
+    def get(self,request,category_id):
+        queryset = Property.objects.filter(category__id=category_id)
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
+    
 class ActivateProperty(APIView):
     permission_classes = [IsAuthenticated, IsPropertyOwnerOrAdmin]
     
@@ -175,33 +265,87 @@ class DeactivateProperty(APIView):
             )
 
 
-class FavoriteProperty(APIView):
+class AddToFavoriteView(APIView):
     permission_classes = [IsAuthenticated, IsRenter]
+
+    def post(self, request, pk):
+        try:
+            property_obj = Property.objects.get(pk=pk, status="ACTIVE")
+
+            favorite, created = Favorite.objects.get_or_create(
+                user=request.user,
+                property=property_obj
+            )
+
+            if not created:
+                return success_response(message="Already in favorites")
+
+            return success_response(message="Added to favorites")
+
+        except Property.DoesNotExist:
+            return error_response(
+                message="Property not found",
+                status_code=404
+            )
+
+class RemoveFromFavoriteView(APIView):
+    permission_classes = [IsAuthenticated, IsRenter]
+
+    def post(self, request, pk):
+        try:
+            property_obj = Property.objects.get(pk=pk)
+
+            favorite = Favorite.objects.filter(
+                user=request.user,
+                property=property_obj
+            ).first()
+
+            if not favorite:
+                return error_response(
+                    message="Not in favorites",
+                    status_code=404
+                )
+
+            favorite.delete()
+            return success_response(message="Removed from favorites")
+
+        except Property.DoesNotExist:
+            return error_response(
+                message="Property not found",
+                status_code=404
+            )
+            
+            
+class ActivatePropertyView(APIView):
+    permission_classes = [IsAuthenticated, IsPropertyOwnerOrAdmin]
     
     def post(self, request, pk):
         try:
             property_obj = Property.objects.get(pk=pk)
-            # Add to user's favorites
-            request.user.favorite_properties.add(property_obj)
+            self.check_object_permissions(request, property_obj)
+            property_obj.is_active = True
+            property_obj.save()
             return success_response(
-                message='Property added to favorites'
+                message='Property activated successfully'
             )
         except Property.DoesNotExist:
             return error_response(
                 message='Property not found',
                 status_code=404
             )
-
-
-class UnfavoriteProperty(APIView):
-    permission_classes = [IsAuthenticated, IsRenter]
+            
+            
+class DeactivatePropertyView(APIView):
+    permission_classes = [IsAuthenticated, IsPropertyOwnerOrAdmin]
     
     def post(self, request, pk):
         try:
             property_obj = Property.objects.get(pk=pk)
-            request.user.favorite_properties.remove(property_obj)
+            self.check_object_permissions(request, property_obj)
+            property_obj.is_active = False
+            property_obj.save()
             return success_response(
-                message='Property removed from favorites'
+                message='Property deactivated successfully'
             )
         except Property.DoesNotExist:
             return error_response(

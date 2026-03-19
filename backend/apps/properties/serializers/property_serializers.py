@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from apps.properties.models.property import Property, PropertyImage
 from apps.properties.models.location import Location
-from apps.properties.services import PropertyService
+from apps.properties.services.property_service import PropertyService
 from .location_serializers import LocationSerializer,FlexibleLocationField
 
 
