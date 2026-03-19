@@ -1,5 +1,5 @@
 
-post http://localhost:8000/api/v1/properties/1/deactivate/
+get http://localhost:8000/api/v1/properties/search/?q=Bahirdar
 Content-Type:application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0MTE3NTU2LCJpYXQiOjE3NzM5NDExNTYsImp0aSI6IjcxOWY5OGYxMGIzYTRjMzQ4NGQyMGU2ZjNlOGEyYjMxIiwidXNlcl9pZCI6IjMifQ.jpRpk8oTBWY6qhE8TbMHrdoy5IDPJeVUhhOhsSFKhgg
 

@@ -37,7 +37,7 @@ class Property(models.Model):
     
     class Meta:
         ordering = ["created_at"]
-        verbose_name_plural = ['Properties']
+        verbose_name_plural = 'Properties'
 
 class PropertyImage(models.Model):
     

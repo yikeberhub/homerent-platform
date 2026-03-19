@@ -7,7 +7,9 @@ from apps.properties.views import (GetProperties,
                                    DeleteProperty,AddToFavoriteView,
                                    RemoveFromFavoriteView,
                                    ActivatePropertyView,
-                                   DeactivatePropertyView
+                                   DeactivatePropertyView,
+                                   SearchPropertiesView,
+                                   FilterPropertiesView
                                    )
 
 urlpatterns = [
@@ -17,7 +19,8 @@ urlpatterns = [
     path('<int:pk>/update/',UpdateProperty.as_view(),name='update-property'),
     path('<int:pk>/delete/',DeleteProperty.as_view(),name='delete-property'),
     
-    # path('search/', PropertySearchView.as_view(), name='property-search'),
+    path('search/', SearchPropertiesView.as_view(), name='property-search'),
+    path('filter/', FilterPropertiesView.as_view(), name='property-filter'),
     # path('filter/', PropertyFilterView.as_view(), name='property-filter'),
     # path('featured/', FeaturedPropertiesView.as_view(), name='featured-properties'),
     # path('nearby/', NearbyPropertiesView.as_view(), name='nearby-properties'),

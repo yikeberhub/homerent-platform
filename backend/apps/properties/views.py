@@ -4,6 +4,7 @@ from .models.property import Property
 from .models.location import Location
 from .serializers.property_serializers import PropertySerializer, PropertyCreateUpdateSerializer
 from .permissions import PropertyAccessPermission, IsPropertyOwnerOrAdmin, IsOwner,IsRenter
+from .services.property_service import PropertyService
 from core.responses import success_response, error_response
 from core.pagination import CustomResultPagination
 
@@ -136,7 +137,37 @@ class DeleteProperty(APIView):
                 status_code=500
             )
             
+            
+class FilterPropertiesView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def get(self,request):
+        queryset = PropertyService.filter_properties(request.query_params)
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
+
+class SearchPropertiesView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request):
+        queryset = PropertyService.search_properties(request.query_params.get('q'))
+        paginator = CustomResultPagination()
+        paginated_properties = paginator.paginate_queryset(queryset, request)
+        serializer = PropertySerializer(paginated_properties, many=True)
+        return paginator.get_paginated_response(
+            success_response(
+                data={'properties': serializer.data},
+                message='Properties retrieved successfully'
+            ).data
+        )
+    
 class ActivateProperty(APIView):
     permission_classes = [IsAuthenticated, IsPropertyOwnerOrAdmin]
     

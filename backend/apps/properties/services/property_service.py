@@ -1,11 +1,102 @@
 from rest_framework.exceptions import ValidationError
 from django.db import transaction
-from .models.location import Location
-from .models.property import Property,PropertyImage
-from .serializers.location_serializers import LocationCreateUpdateSerializer
+from django.db.models import Q
+from apps.properties.models.location import Location
+from apps.properties.models.property import Property,PropertyImage
+from apps.properties.serializers.location_serializers import LocationCreateUpdateSerializer
 
 
 class PropertyService:
+    
+    @staticmethod
+    def get_base_queryset():
+        return Property.objects.filter(
+            is_active=True,
+            is_available=True
+        ).select_related('location','category').prefetch_related('images')
+        
+    @staticmethod
+    def apply_filters(queryset,params):
+        city = params.get('city')
+        category = params.get('category')
+        min_price = params.get('min_price')
+        max_price = params.get('max_price')
+        region = params.get('region')
+        village = params.get('village')
+        
+        if city:
+            queryset = queryset.filter(location__city__iexact=city)
+        if category:
+            queryset = queryset.filter(category__name__iexact=category)
+        if min_price:
+            queryset = queryset.filter(price__gte=min_price)
+        if max_price:
+            queryset = queryset.filter(price__lte=max_price)
+        if region:
+            queryset = queryset.filter(location__region__iexact=region)
+        if village:
+            queryset = queryset.filter(location__village__iexact=village)
+        
+        return queryset
+    
+    @staticmethod
+    def apply_geo_filter(queryset, params):
+        lat = params.get('lat')
+        lng = params.get('lng')
+        radius = params.get('radius')
+        
+        if lat and lng and radius:
+            from django.db.models import F, FloatField, ExpressionWrapper
+            from django.db.models.functions import ACos, Cos, Sin, Radians
+            
+            try:
+                lat = float(lat)
+                lng = float(lng)
+                radius = float(radius)
+            except (TypeError,ValueError):
+                raise ValidationError('Invalid geo parameters')
+            
+            queryset = queryset.annotate(
+                distance=ExpressionWrapper(6371 * ACos(  
+                    Cos(Radians(lat)) *
+                    Cos(Radians(F('location__latitude'))) *
+                    Cos(Radians(F('location__longitude')) - Radians(lng)) +
+                    Sin(Radians(lat)) *
+                    Sin(Radians(F('location__latitude')))
+                ),
+                output_field=FloatField()
+                )
+            ).filter(distance__lte=radius).order_by('distance')
+
+        
+        return queryset
+        
+    
+    @staticmethod
+    def filter_properties(params):
+        queryset = PropertyService.get_base_queryset()
+        queryset = PropertyService.apply_filters(queryset,params)
+        queryset = PropertyService.apply_geo_filter(queryset,params)
+        
+        return queryset
+    
+    @staticmethod
+    def search_properties(q):
+        queryset = PropertyService.get_base_queryset()
+        queryset = queryset.filter(
+            Q(title__icontains=q) | 
+            Q(description__icontains=q)|
+            Q(category__name__icontains=q)|
+            Q(location__city__icontains=q)|
+            Q(location__village__icontains=q)|
+            Q(location__region__icontains=q)
+            
+            
+            
+        )
+        return queryset
+            
+        
     @staticmethod
     def handle_location_data(location_data):
         
